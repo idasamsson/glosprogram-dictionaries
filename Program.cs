@@ -2,36 +2,29 @@
 
 Console.WriteLine("Glosprogram");
 
-// snabb, fast
-List<Word> words = [
-/*   ["snabb", "fast"],
-    ["snabb", "quick"],
-    ["glad", "glad"],
-*/
-new Word("svenska", "english", "snabb", "fast"), //minnesreferens skapas
-new Word("svenska", "english", "snabb", "quick"),
-new Word("svenska", "english", "snabb", "rapid"),
-new Word("svenska", "english", "snabb", "speedy"),
-new Word("svenska", "english", "glad", "happy"),
-new Word("svenska", "english", "glad", "glad"),
-new Word("svenska", "english", "stark", "strong"),
-new Word("svenska", "english", "stark", "powerful"),
-new Word("svenska", "italiano", "snabb", "rapido"),
-new Word("svenska", "italiano", "stark", "forte"),
-new Word("svenska", "italiano", "stark", "robusto"),
-new Word("svenska", "italiano", "glad", "felice"),
-    ];
+List<Word> words = [];
 
+// läser in wordlists
+string filePath = Path.Combine("wordlists", "swedish-english.csv");
+string[] swedish_english = File.ReadAllLines(filePath); //"wordlists/swedish-english.csv"
+Console.WriteLine(swedish_english[0]);
+// iterera över en wordlist och splitta varje entry (snabb,fast) till [snabb,fast]
+
+for (int i = 0; i < swedish_english.Length; i++)
+{
+    var pair = swedish_english[i].Split(",");
+    words.Add(new Word ("svenska", "english", pair[0], pair[1]));
+}
 
 while (true)
 {
-    Console.WriteLine("Välj vilka språk du vill överstätta mellan, 1:");
+    Console.WriteLine("Välj vilka språk du vill översätta mellan, 1:");
     string? toLanguage = Console.ReadLine();
 
        Console.WriteLine("2:");
     string? fromLanguage = Console.ReadLine();
 
-    Console.WriteLine($"Vill du översätta från {fromLanguage} till {toLanguage} eller tvärtom?");
+    Console.WriteLine($"Vill du översätta från {toLanguage} till {fromLanguage} eller tvärtom?");
     string? response = Console.ReadLine();
 
     bool reverse = false;
@@ -58,7 +51,7 @@ while (true)
 
     foreach (var word in wordDict [fromWord!])
     {
-        Console.WriteLine($"Översättning: {(reverse ? word.FromWord : word.ToWord)}");
+        Console.WriteLine($"Översättning: {(reverse ? word.ToWord : word.FromWord)}");
     }
 
 }
