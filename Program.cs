@@ -7,28 +7,49 @@ List<Word> words = [
     ["glad", "glad"],
 */
 new Word("svenska", "english", "snabb", "fast"), //minnesreferens skapas
+new Word("svenska", "english", "snabb", "quick"),
+new Word("svenska", "english", "snabb", "rapid"),
+new Word("svenska", "english", "snabb", "speedy"),
 new Word("svenska", "english", "glad", "happy"),
+new Word("svenska", "english", "glad", "glad"),
+new Word("svenska", "english", "stark", "strong"),
+new Word("svenska", "english", "stark", "powerful"),
+new Word("svenska", "italiano", "snabb", "rapido"),
+new Word("svenska", "italiano", "stark", "forte"),
+new Word("svenska", "italiano", "stark", "robusto"),
+new Word("svenska", "italiano", "glad", "felice"),
     ];
 
-// words [0] => samma minnesreferens
 
-
-foreach (var word in words)
+while (true)
 {
-    Console.WriteLine($"{word.FromLanguage}: {word.FromWord} => {word.ToLanguage}: {word.ToWord}");
+    Console.WriteLine("Välj vilket språk du vill översätta till:");
+    string? toLanguage = Console.ReadLine();
+
+       Console.WriteLine("Välj vilket språk du vill översätta från:");
+    string? fromLanguage = Console.ReadLine();
+
+    Console.WriteLine("Vilket ord vill du översätta?");
+    string? wordToTranslate = Console.ReadLine();
+
+    // felhantera genom att kolla om språket jag ber om finns som ToLanguage i listan
+
+                                    // key  // value      // for each word in words
+    Dictionary<string, List <Word>> wordDict = words
+    .Where(word => word.FromLanguage == fromLanguage)
+    .Where(word => word.ToLanguage == toLanguage)
+    .GroupBy(word => word.FromWord)
+    .ToDictionary(
+        group => group.Key, // ordet jag vill översätta från
+        group => group.ToList() // lista med våra word objekt som matchar nyckeln
+    );
+
+    foreach (var word in wordDict [wordToTranslate!])
+    {
+        Console.WriteLine($"Översättning: {word.ToWord}");
+    }
+
 }
-
-    // key    // value
-Dictionary<string, Word> swedishToEnglish = 
-
-// for each word in words
-words.ToDictionary(
-    word => word.FromWord, // ordet jag vill översätta från
-    word => word // hela word objektet (med översättningen till)
-);
-
-Console.WriteLine($"Översättningen av snabb är:{swedishToEnglish["snabb"].ToWord}");
-Console.WriteLine($"Översättningen av glad är:{swedishToEnglish["glad"].ToWord}");
 
 
 
