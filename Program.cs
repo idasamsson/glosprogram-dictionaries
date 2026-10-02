@@ -1,4 +1,6 @@
-﻿Console.WriteLine("Glosprogram");
+﻿using System.Runtime.InteropServices;
+
+Console.WriteLine("Glosprogram");
 
 // snabb, fast
 List<Word> words = [
@@ -23,14 +25,21 @@ new Word("svenska", "italiano", "glad", "felice"),
 
 while (true)
 {
-    Console.WriteLine("Välj vilket språk du vill översätta till:");
+    Console.WriteLine("Välj vilka språk du vill överstätta mellan, 1:");
     string? toLanguage = Console.ReadLine();
 
-       Console.WriteLine("Välj vilket språk du vill översätta från:");
+       Console.WriteLine("2:");
     string? fromLanguage = Console.ReadLine();
 
-    Console.WriteLine("Vilket ord vill du översätta?");
-    string? wordToTranslate = Console.ReadLine();
+    Console.WriteLine($"Vill du översätta från {fromLanguage} till {toLanguage} eller tvärtom?");
+    string? response = Console.ReadLine();
+
+    bool reverse = false;
+
+    if(response == "tvärtom")
+    {
+        reverse = true;
+    }
 
     // felhantera genom att kolla om språket jag ber om finns som ToLanguage i listan
 
@@ -38,15 +47,18 @@ while (true)
     Dictionary<string, List <Word>> wordDict = words
     .Where(word => word.FromLanguage == fromLanguage)
     .Where(word => word.ToLanguage == toLanguage)
-    .GroupBy(word => word.FromWord)
+    .GroupBy(word => reverse ? word.ToWord : word.FromWord)
     .ToDictionary(
         group => group.Key, // ordet jag vill översätta från
         group => group.ToList() // lista med våra word objekt som matchar nyckeln
     );
 
-    foreach (var word in wordDict [wordToTranslate!])
+    Console.WriteLine("Välj vilket ord du vill översätta?");
+    string? fromWord = Console.ReadLine();
+
+    foreach (var word in wordDict [fromWord!])
     {
-        Console.WriteLine($"Översättning: {word.ToWord}");
+        Console.WriteLine($"Översättning: {(reverse ? word.FromWord : word.ToWord)}");
     }
 
 }
